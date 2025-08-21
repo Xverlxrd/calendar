@@ -2,7 +2,7 @@
   <div class="calendar">
     <div class="calendar_header">
       <span @click="prevMonth">-</span>
-      <span>{{currentDate.toLocaleString('en', { month: 'short' })}} {{ currentDate.getFullYear() }}</span>
+      <span>{{currentMonthName}} {{ currentYear }}</span>
       <span @click="nextMonth">+</span>
     </div>
 
@@ -23,7 +23,7 @@
       </span>
     </div>
 
-    <h4>Выбранная дата: {{}}</h4>
+    <h4>Selected date: {{}}</h4>
   </div>
 </template>
 
@@ -33,12 +33,17 @@ import { ref, computed, onMounted } from 'vue';
 const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 const currentDate = ref(new Date());
 
+const currentYear = computed(() => currentDate.value.getFullYear());
+const currentMonth = computed(() => currentDate.value.getMonth());
+const currentMonthName = computed(() =>
+    currentDate.value.toLocaleString('en', { month: 'short' })
+);
 // const selectedDate = ref(null);
 // const selectDay = (day: number) => {
 // }
 
 const firstDayOffset = computed(() =>
-    new Date(currentDate.value.getFullYear(), currentDate.value.getMonth(), 1).getDay()
+    new Date(currentYear.value, currentMonth.value, 1).getDay()
 );
 
 const calendarDays = computed(() => {
